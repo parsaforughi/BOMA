@@ -47,7 +47,7 @@ class AppUpdateService {
     final platform = Platform.isIOS ? 'ios' : 'android';
 
     try {
-      final uri = AppConfig.versionCheckUri(
+      final uri = AppConfig.resolvedVersionCheckUri(
         platform: platform,
         buildNumber: buildNumber,
       );

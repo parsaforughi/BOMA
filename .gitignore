@@ -63,6 +63,7 @@ migrate_working_dir/
 /server/npm-debug.log*
 /server/yarn-error.log*
 /server/pnpm-debug.log*
+/server/data/
 /\.gradle-user-home/
 /\.cursor/
 /coverage/

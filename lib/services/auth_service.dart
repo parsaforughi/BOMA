@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import '../config/app_config.dart';
 import '../config/app_features.dart';
 import '../models/user.dart';
 import 'storage_service.dart';
@@ -42,31 +46,92 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  /// Local OTP flow for v1 — real SMS API can be wired later.
   Future<bool> sendOtp(String phone) async {
     state = state.copyWith(isLoading: true, error: null);
-    await Future.delayed(const Duration(milliseconds: 800));
-    state = state.copyWith(isLoading: false);
-    return true;
+
+    if (!AppConfig.hasApi) {
+      // Dev / offline mode — OTP is accepted without a real SMS
+      await Future.delayed(const Duration(milliseconds: 600));
+      state = state.copyWith(isLoading: false);
+      return true;
+    }
+
+    try {
+      final res = await http
+          .post(
+            AppConfig.authUri('/api/auth/send-otp'),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'phone': phone}),
+          )
+          .timeout(const Duration(seconds: 10));
+
+      if (res.statusCode == 200) {
+        state = state.copyWith(isLoading: false);
+        return true;
+      }
+      final body = jsonDecode(res.body) as Map<String, dynamic>;
+      state = state.copyWith(
+          isLoading: false, error: body['error'] as String? ?? 'server_error');
+      return false;
+    } catch (e) {
+      debugPrint('sendOtp error: $e');
+      state = state.copyWith(isLoading: false, error: 'connection_error');
+      return false;
+    }
   }
 
   Future<bool> verifyOtp(String phone, String code) async {
     state = state.copyWith(isLoading: true, error: null);
-    await Future.delayed(const Duration(milliseconds: 800));
 
-    if (code.length == 4) {
-      final user = User(
-        id: 'user_${DateTime.now().millisecondsSinceEpoch}',
-        phone: phone,
-        token: 'local_token_${DateTime.now().millisecondsSinceEpoch}',
-      );
-      await _storage.saveAuth(user.toJson());
-      state = AuthState(user: user);
-      return true;
+    if (!AppConfig.hasApi) {
+      // Dev mode — any code works
+      await Future.delayed(const Duration(milliseconds: 600));
+      if (code.length >= 4) {
+        final user = User(
+          id: 'dev_${DateTime.now().millisecondsSinceEpoch}',
+          phone: phone,
+          token: 'dev_token_${DateTime.now().millisecondsSinceEpoch}',
+        );
+        await _storage.saveAuth(user.toJson());
+        state = AuthState(user: user);
+        return true;
+      }
+      state = state.copyWith(isLoading: false, error: 'invalid_code');
+      return false;
     }
 
-    state = state.copyWith(isLoading: false, error: 'invalid_code');
-    return false;
+    try {
+      final res = await http
+          .post(
+            AppConfig.authUri('/api/auth/verify-otp'),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'phone': phone, 'code': code}),
+          )
+          .timeout(const Duration(seconds: 10));
+
+      final body = jsonDecode(res.body) as Map<String, dynamic>;
+
+      if (res.statusCode == 200 && body['ok'] == true) {
+        final serverUser = body['user'] as Map<String, dynamic>;
+        final user = User(
+          id: serverUser['id'].toString(),
+          phone: serverUser['phone'] as String,
+          token: body['token'] as String,
+        );
+        await _storage.saveAuth(user.toJson());
+        state = AuthState(user: user);
+        return true;
+      }
+
+      state = state.copyWith(
+          isLoading: false,
+          error: body['error'] as String? ?? 'invalid_code');
+      return false;
+    } catch (e) {
+      debugPrint('verifyOtp error: $e');
+      state = state.copyWith(isLoading: false, error: 'connection_error');
+      return false;
+    }
   }
 
   Future<void> setPro(int months) async {
