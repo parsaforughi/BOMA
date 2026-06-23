@@ -10,7 +10,7 @@ Persian text-styling and story-creation app built with Flutter.
 - **Stickers**: Drag, resize, and rotate stickers on your canvas
 - **Image Export**: Save to gallery, share to Instagram/WhatsApp/Telegram
 - **Version 1 Ready**: All premium features are currently free (no payment required)
-- **OTP Login API**: Real backend OTP login over SMS provider
+- **Force Update Control**: Remote version check via Railway API
 - **Multi-language**: Persian (Farsi), Arabic, English
 - **RTL Support**: Full right-to-left layout for Persian and Arabic
 - **Dark Theme**: Modern dark UI matching Figma design
@@ -73,17 +73,14 @@ lib/
 
 ## Backend (Railway)
 
-The backend lives in `server/` and includes:
-- OTP auth APIs (`/api/auth/send-otp`, `/api/auth/verify-otp`)
-- PostgreSQL user database
-- Admin panel (`/admin`) to see registered users
-- App version check (`/api/app/version`)
-
-Run mobile app with backend URL:
+فقط پوشه `server/` روی Railway دیپلوی می‌شود — **یک API کوچک برای آپدیت اجباری**. وب‌اپ یا بک‌اند کامل لازم نیست.
 
 ```bash
-flutter run --dart-define=BOMA_API=https://YOUR-APP.up.railway.app
+flutter build apk --release \
+  --dart-define=BOMA_VERSION_API=https://YOUR-APP.up.railway.app
 ```
+
+برای فعال کردن آپدیت اجباری، `MIN_BUILD_NUMBER` را روی Railway بالا ببر.
 
 ## State Management
 

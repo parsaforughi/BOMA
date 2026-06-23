@@ -1,13 +1,11 @@
 const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const path = require('path');
-const { initDb } = require('./src/db');
-const authRoutes = require('./src/auth-routes');
-const { router: adminRoutes } = require('./src/admin-routes');
 
 const app = express();
 const port = Number(process.env.PORT || 3000);
+
+// Railway env vars — only for force-update control:
+// MIN_BUILD_NUMBER, LATEST_BUILD_NUMBER, LATEST_VERSION, FORCE_UPDATE,
+// UPDATE_MESSAGE, ANDROID_STORE_URL, IOS_STORE_URL
 
 function envInt(name, fallback) {
   const value = Number(process.env[name]);
@@ -20,13 +18,8 @@ function envBool(name, fallback) {
   return ['1', 'true', 'yes', 'on'].includes(String(raw).toLowerCase());
 }
 
-app.use(cors({ origin: true, credentials: true }));
-app.use(express.json());
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.get('/health', (_req, res) => {
-  res.json({ ok: true, service: 'boma-api' });
+  res.json({ ok: true, service: 'boma-version-api' });
 });
 
 app.get('/api/app/version', (req, res) => {
@@ -63,25 +56,6 @@ app.get('/api/app/version', (req, res) => {
   });
 });
 
-app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
-
-app.get('/admin', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
-async function start() {
-  if (!process.env.DATABASE_URL) {
-    console.error('DATABASE_URL is required. Add PostgreSQL on Railway.');
-    process.exit(1);
-  }
-  await initDb();
-  app.listen(port, () => {
-    console.log(`BOMA API listening on :${port}`);
-  });
-}
-
-start().catch((err) => {
-  console.error('Failed to start:', err);
-  process.exit(1);
+app.listen(port, () => {
+  console.log(`BOMA version API listening on :${port}`);
 });

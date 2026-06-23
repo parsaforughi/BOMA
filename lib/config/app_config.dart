@@ -1,26 +1,24 @@
 /// Remote config for BOMA client.
 ///
-/// After deploying [server/] to Railway, set [apiBaseUrl] to your
-/// public URL, e.g. `https://boma-api.up.railway.app`.
+/// Railway only hosts the force-update API — not the full app.
+/// Set [versionApiBaseUrl] to your Railway URL after deploying [server/].
 ///
-/// Override at build time:
-/// `flutter build apk --dart-define=BOMA_API=https://...`
+/// `flutter build apk --dart-define=BOMA_VERSION_API=https://...`
 class AppConfig {
   AppConfig._();
 
-  static const apiBaseUrl = String.fromEnvironment(
-    'BOMA_API',
+  static const versionApiBaseUrl = String.fromEnvironment(
+    'BOMA_VERSION_API',
     defaultValue: '',
   );
 
-  static bool get hasApi => apiBaseUrl.isNotEmpty;
-  static bool get hasVersionApi => hasApi;
+  static bool get hasVersionApi => versionApiBaseUrl.isNotEmpty;
 
   static Uri versionCheckUri({
     required String platform,
     required int buildNumber,
   }) {
-    return Uri.parse(apiBaseUrl).replace(
+    return Uri.parse(versionApiBaseUrl).replace(
       path: '/api/app/version',
       queryParameters: {
         'platform': platform,
@@ -28,10 +26,4 @@ class AppConfig {
       },
     );
   }
-
-  static Uri sendOtpUri() =>
-      Uri.parse(apiBaseUrl).replace(path: '/api/auth/send-otp');
-
-  static Uri verifyOtpUri() =>
-      Uri.parse(apiBaseUrl).replace(path: '/api/auth/verify-otp');
 }

@@ -1,8 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../config/app_features.dart';
-import '../config/app_config.dart';
 import '../models/user.dart';
 import 'storage_service.dart';
 
@@ -45,76 +42,33 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  /// Sends OTP via backend API.
+  /// Local OTP flow for v1 — real SMS API can be wired later.
   Future<bool> sendOtp(String phone) async {
     state = state.copyWith(isLoading: true, error: null);
-    try {
-      if (!AppConfig.hasApi) {
-        await Future.delayed(const Duration(milliseconds: 600));
-        state = state.copyWith(isLoading: false);
-        return true;
-      }
-
-      final response = await http.post(
-        AppConfig.sendOtpUri(),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'phone': phone}),
-      );
-
-      state = state.copyWith(isLoading: false);
-      return response.statusCode >= 200 && response.statusCode < 300;
-    } catch (_) {
-      state = state.copyWith(isLoading: false, error: 'network_error');
-      return false;
-    }
+    await Future.delayed(const Duration(milliseconds: 800));
+    state = state.copyWith(isLoading: false);
+    return true;
   }
 
-  /// Verifies OTP and logs in user.
   Future<bool> verifyOtp(String phone, String code) async {
     state = state.copyWith(isLoading: true, error: null);
-    try {
-      if (!AppConfig.hasApi) {
-        await Future.delayed(const Duration(milliseconds: 700));
-        if (code.length != 4) {
-          state = state.copyWith(isLoading: false, error: 'invalid_code');
-          return false;
-        }
-        final user = User(
-          id: 'user_${DateTime.now().millisecondsSinceEpoch}',
-          phone: phone,
-          token: 'mock_token_${DateTime.now().millisecondsSinceEpoch}',
-        );
-        await _storage.saveAuth(user.toJson());
-        state = AuthState(user: user);
-        return true;
-      }
+    await Future.delayed(const Duration(milliseconds: 800));
 
-      final response = await http.post(
-        AppConfig.verifyOtpUri(),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'phone': phone, 'code': code}),
+    if (code.length == 4) {
+      final user = User(
+        id: 'user_${DateTime.now().millisecondsSinceEpoch}',
+        phone: phone,
+        token: 'local_token_${DateTime.now().millisecondsSinceEpoch}',
       );
-
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        state = state.copyWith(isLoading: false, error: 'invalid_code');
-        return false;
-      }
-
-      final payload = jsonDecode(response.body) as Map<String, dynamic>;
-      final userJson = (payload['user'] as Map<String, dynamic>? ?? {});
-      final token = payload['token']?.toString();
-
-      final user = User.fromJson({...userJson, 'token': token});
       await _storage.saveAuth(user.toJson());
       state = AuthState(user: user);
       return true;
-    } catch (_) {
-      state = state.copyWith(isLoading: false, error: 'network_error');
-      return false;
     }
+
+    state = state.copyWith(isLoading: false, error: 'invalid_code');
+    return false;
   }
 
-  /// Set user as pro
   Future<void> setPro(int months) async {
     if (state.user == null) return;
     final newExpiry = DateTime.now().add(Duration(days: months * 30));
@@ -123,7 +77,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = AuthState(user: updatedUser);
   }
 
-  /// Logout
   Future<void> logout() async {
     await _storage.removeAuth();
     state = const AuthState();
