@@ -1,0 +1,229 @@
+name: boma
+description: Boma - Persian text styling and story creation app
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  shared_preferences: ^2.2.2
+  go_router: ^14.0.0
+  flutter_riverpod: ^2.4.9
+  screenshot: ^3.0.0
+  gal: 2.2.2
+  share_plus: ^7.2.1
+  path_provider: ^2.1.2
+  file_picker: ^8.0.0
+  flutter_svg: ^2.0.9
+  permission_handler: ^11.2.0
+  flutter_colorpicker: ^1.0.3
+  http: ^1.2.2
+  package_info_plus: ^8.1.1
+  connectivity_plus: ^6.1.0
+  url_launcher: ^6.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+# Pin transitive plugin versions that build cleanly with this project's AGP.
+# Newer 2.4.23 from the pub mirror fails to expose its Android plugin class.
+dependency_overrides:
+  shared_preferences_android: 2.4.20
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/styles/
+    - assets/styles/pishrafte/
+    - assets/styles/materialized/
+    - assets/styles/materialized/tex/
+    - assets/styles/electric/
+    - assets/figma/
+    - assets/stickers/Arrow/
+    - assets/stickers/Emoji/
+    - assets/stickers/Frame/
+    - assets/stickers/Like/
+    - assets/stickers/Memes/
+    - assets/stickers/Nowruz/
+    - assets/stickers/Sale/
+    - assets/stickers/Social Media/
+
+  fonts:
+    - family: Vazir
+      fonts:
+        - asset: assets/fonts/vazir-font-v16.1.0/Vazir.ttf
+        - asset: assets/fonts/vazir-font-v16.1.0/Vazir-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/vazir-font-v16.1.0/Vazir-Light.ttf
+          weight: 300
+        - asset: assets/fonts/vazir-font-v16.1.0/Vazir-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/vazir-font-v16.1.0/Vazir-Thin.ttf
+          weight: 100
+    - family: Shabnam
+      fonts:
+        - asset: assets/fonts/shabnam-font-v5.0.1/Shabnam.ttf
+        - asset: assets/fonts/shabnam-font-v5.0.1/Shabnam-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/shabnam-font-v5.0.1/Shabnam-Light.ttf
+          weight: 300
+        - asset: assets/fonts/shabnam-font-v5.0.1/Shabnam-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/shabnam-font-v5.0.1/Shabnam-Thin.ttf
+          weight: 100
+    - family: Sahel
+      fonts:
+        - asset: assets/fonts/sahel-font-v1.0.0-alpha9/Sahel.ttf
+        - asset: assets/fonts/sahel-font-v1.0.0-alpha9/Sahel-Bold.ttf
+          weight: 700
+    - family: Samim
+      fonts:
+        - asset: assets/fonts/samim-font-v2.0.1/Samim.ttf
+        - asset: assets/fonts/samim-font-v2.0.1/Samim-Bold.ttf
+          weight: 700
+    - family: Dirooz
+      fonts:
+        - asset: assets/fonts/dirooz-font-v0.2.1/Dirooz.ttf
+    - family: Parastoo
+      fonts:
+        - asset: assets/fonts/parastoo-font-v1.0.0-alpha3/web/Parastoo.ttf
+        - asset: assets/fonts/parastoo-font-v1.0.0-alpha3/web/Parastoo-Bold.ttf
+          weight: 700
+    - family: IranNastaliq
+      fonts:
+        - asset: assets/fonts/IranNastaliq&Help-fontyab.com/IranNastaliq.ttf
+    - family: Lalezar
+      fonts:
+        - asset: assets/fonts/Lalezar-Font/TTF/Lalezar-Regular.ttf
+    - family: BTraffic
+      fonts:
+        - asset: assets/fonts/Btraffic/BTRAFFIC.TTF
+        - asset: assets/fonts/Btraffic/BTRAFB.TTF
+          weight: 700
+    - family: Afsaneh
+      fonts:
+        - asset: assets/fonts/AFSANEH/AFSANEH.ttf
+    - family: AMosalas
+      fonts:
+        - asset: assets/fonts/A-Mosalas/A-Mosalas.ttf
+    - family: DigiGhaf
+      fonts:
+        - asset: assets/fonts/Digi-Gafwww.digifonts.ir_/Digi Ghaf Bold.ttf
+          weight: 700
+    - family: DigiLalezar
+      fonts:
+        - asset: assets/fonts/Digi-Lalezar-Pluslwww.digifonts.ir_/Digi Lalezar Plus Circle.ttf
+    - family: Parvaz
+      fonts:
+        - asset: assets/fonts/W_parvaz/W_parvaz.TTF
+    - family: Amine
+      fonts:
+        - asset: assets/fonts/amine/amine.ttf
+    - family: GAseman
+      fonts:
+        - asset: assets/fonts/G-Aseman-Fontjo.com/g aseman.ttf
+    # --- Figma "Advanced text effects" style fonts ---
+    - family: Bangers
+      fonts:
+        - asset: assets/fonts/effects/Bangers-Regular.ttf
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/effects/Cairo.ttf
+    - family: LeckerliOne
+      fonts:
+        - asset: assets/fonts/effects/LeckerliOne-Regular.ttf
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/effects/Comfortaa.ttf
+    - family: Oswald
+      fonts:
+        - asset: assets/fonts/effects/Oswald.ttf
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/effects/Nunito.ttf
+    # --- Figma "Materialized" Vol.1 style fonts ---
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/effects/Roboto.ttf
+    - family: RedHatDisplay
+      fonts:
+        - asset: assets/fonts/effects/RedHatDisplay.ttf
+    - family: Oxanium
+      fonts:
+        - asset: assets/fonts/effects/Oxanium.ttf
+    - family: BakbakOne
+      fonts:
+        - asset: assets/fonts/effects/BakbakOne-Regular.ttf
+    - family: LibreBodoni
+      fonts:
+        - asset: assets/fonts/effects/LibreBodoni.ttf
+    # --- Figma "Electric glow" Vol.2 style fonts ---
+    - family: Staatliches
+      fonts:
+        - asset: assets/fonts/effects/Staatliches-Regular.ttf
+    - family: ZenDots
+      fonts:
+        - asset: assets/fonts/effects/ZenDots-Regular.ttf
+    - family: Righteous
+      fonts:
+        - asset: assets/fonts/effects/Righteous-Regular.ttf
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/effects/Poppins-Black.ttf
+          weight: 900
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/effects/Inter.ttf
+    # --- Figma "Text effects Pishrafte" style fonts ---
+    - family: FugazOne
+      fonts:
+        - asset: assets/fonts/effects/FugazOne-Regular.ttf
+    - family: ArchivoBlack
+      fonts:
+        - asset: assets/fonts/effects/ArchivoBlack-Regular.ttf
+    - family: OleoScript
+      fonts:
+        - asset: assets/fonts/effects/OleoScript-Bold.ttf
+          weight: 700
+    - family: Chewy
+      fonts:
+        - asset: assets/fonts/effects/Chewy-Regular.ttf
+    - family: Kalam
+      fonts:
+        - asset: assets/fonts/effects/Kalam-Bold.ttf
+          weight: 700
+    - family: Fredoka
+      fonts:
+        - asset: assets/fonts/effects/Fredoka.ttf
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/effects/Rubik.ttf
+    - family: BTitr
+      fonts:
+        - asset: assets/fonts/storyfont/storyfont_fa_titr_plus.ttf
+          weight: 700
+    # --- Persian "A-series" fonts (exact Figma fonts) ---
+    - family: AArghavan
+      fonts:
+        - asset: assets/fonts/effects/AArghavan.ttf
+    - family: AAtila
+      fonts:
+        - asset: assets/fonts/effects/AAtila.ttf
+    - family: ABank
+      fonts:
+        - asset: assets/fonts/effects/ABank.ttf
+    - family: AShams
+      fonts:
+        - asset: assets/fonts/effects/AShams.ttf

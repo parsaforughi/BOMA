@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>پنل مدیریت بوما</title>
+  <style>
+    :root {
+      --bg: #0f1528;
+      --card: #171f36;
+      --accent: #2b4589;
+      --text: #f0f0f0;
+      --muted: #a8b0c8;
+      --border: rgba(255,255,255,0.12);
+      --green: #4ade80;
+      --red: #f87171;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Tahoma, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 20% 10%, #171f36, #0f1528 70%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    h1 { margin: 0 0 8px; font-size: 1.6rem; }
+    .sub { color: var(--muted); margin-bottom: 24px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+    .stat {
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat .n { font-size: 1.8rem; font-weight: 700; }
+    .stat .l { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+    input, button {
+      font: inherit;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+    }
+    input {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+    }
+    button {
+      background: white;
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+    }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid var(--border); text-align: right; }
+    th { color: var(--muted); font-weight: 600; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+    }
+    .badge.pro { background: rgba(74,222,128,0.15); color: var(--green); }
+    .badge.free { background: rgba(255,255,255,0.08); color: var(--muted); }
+    .error { color: var(--red); margin-top: 8px; }
+    .hidden { display: none !important; }
+    .toolbar { margin-bottom: 12px; }
+    .pager { margin-top: 12px; justify-content: space-between; }
+    @media (max-width: 700px) {
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }
+      tr { margin-bottom: 12px; border: 1px solid var(--border); border-radius: 10px; padding: 8px; }
+      td { border: none; padding: 4px 8px; }
+      td::before {
+        content: attr(data-label);
+        color: var(--muted);
+        display: inline-block;
+        min-width: 90px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>پنل مدیریت بوما</h1>
+    <p class="sub">کاربران ثبت‌نام‌شده از طریق OTP</p>
+
+    <div id="loginView" class="card">
+      <h2 style="margin-top:0">ورود ادمین</h2>
+      <div class="row">
+        <input id="username" placeholder="نام کاربری" style="max-width:220px" />
+        <input id="password" type="password" placeholder="رمز عبور" style="max-width:220px" />
+        <button id="loginBtn">ورود</button>
+      </div>
+      <div id="loginError" class="error hidden"></div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+      <div class="card stats" id="stats"></div>
+
+      <div class="card">
+        <div class="row toolbar">
+          <input id="search" placeholder="جستجو با شماره موبایل..." style="max-width:280px" />
+          <button id="searchBtn">جستجو</button>
+          <button class="secondary" id="refreshBtn">بروزرسانی</button>
+          <button class="secondary" id="logoutBtn">خروج</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>شماره</th>
+                <th>تاریخ ثبت‌نام</th>
+                <th>آخرین ورود</th>
+                <th>وضعیت</th>
+              </tr>
+            </thead>
+            <tbody id="usersBody"></tbody>
+          </table>
+        </div>
+        <div class="row pager">
+          <span id="pageInfo" class="sub"></span>
+          <div class="row">
+            <button class="secondary" id="prevBtn">قبلی</button>
+            <button class="secondary" id="nextBtn">بعدی</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let page = 1;
+    let total = 0;
+    const limit = 25;
+
+    const $ = (id) => document.getElementById(id);
+    const loginView = $('loginView');
+    const dashboard = $('dashboard');
+
+    function fmtDate(iso) {
+      if (!iso) return '—';
+      return new Date(iso).toLocaleString('fa-IR');
+    }
+
+    async function api(path, options = {}) {
+      const res = await fetch(path, {
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+        ...options,
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'request_failed');
+      return data;
+    }
+
+    async function loadStats() {
+      const { stats } = await api('/api/admin/stats');
+      $('stats').innerHTML = `
+        <div class="stat"><div class="n">${stats.totalUsers}</div><div class="l">کل کاربران</div></div>
+        <div class="stat"><div class="n">${stats.signupsToday}</div><div class="l">ثبت‌نام امروز</div></div>
+        <div class="stat"><div class="n">${stats.loginsToday}</div><div class="l">ورود امروز</div></div>
+      `;
+    }
+
+    async function loadUsers() {
+      const search = $('search').value.trim();
+      const q = new URLSearchParams({ page, limit, ...(search ? { search } : {}) });
+      const data = await api('/api/admin/users?' + q);
+      total = data.total;
+      $('usersBody').innerHTML = data.users.map((u) => `
+        <tr>
+          <td data-label="شماره">${u.phone}</td>
+          <td data-label="ثبت‌نام">${fmtDate(u.createdAt)}</td>
+          <td data-label="آخرین ورود">${fmtDate(u.lastLoginAt)}</td>
+          <td data-label="وضعیت">
+            <span class="badge ${u.isPro ? 'pro' : 'free'}">${u.isPro ? 'ویژه' : 'رایگان'}</span>
+          </td>
+        </tr>
+      `).join('');
+      const pages = Math.max(1, Math.ceil(total / limit));
+      $('pageInfo').textContent = `صفحه ${page} از ${pages} — ${total} کاربر`;
+      $('prevBtn').disabled = page <= 1;
+      $('nextBtn').disabled = page >= pages;
+    }
+
+    async function showDashboard() {
+      loginView.classList.add('hidden');
+      dashboard.classList.remove('hidden');
+      await loadStats();
+      await loadUsers();
+    }
+
+    $('loginBtn').onclick = async () => {
+      $('loginError').classList.add('hidden');
+      try {
+        await api('/api/admin/login', {
+          method: 'POST',
+          body: JSON.stringify({
+            username: $('username').value.trim(),
+            password: $('password').value,
+          }),
+        });
+        await showDashboard();
+      } catch (e) {
+        $('loginError').textContent = 'نام کاربری یا رمز عبور اشتباه است';
+        $('loginError').classList.remove('hidden');
+      }
+    };
+
+    $('logoutBtn').onclick = async () => {
+      await api('/api/admin/logout', { method: 'POST' });
+      dashboard.classList.add('hidden');
+      loginView.classList.remove('hidden');
+    };
+
+    $('searchBtn').onclick = () => { page = 1; loadUsers(); };
+    $('refreshBtn').onclick = () => { loadStats(); loadUsers(); };
+    $('prevBtn').onclick = () => { if (page > 1) { page--; loadUsers(); } };
+    $('nextBtn').onclick = () => { page++; loadUsers(); };
+
+    api('/api/admin/stats').then(showDashboard).catch(() => {});
+  </script>
+</body>
+</html>

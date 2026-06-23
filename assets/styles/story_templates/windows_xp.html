@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قالب استوری - پنجره ویندوز قدیمی</title>
+
+    <style>
+        body {
+            /* رنگ سبز-آبی کلاسیک دسکتاپ ویندوز ۹۵ برای نمایش بهتر قالب */
+            background-color: #008080;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            /* فونت تاهوما بهترین انتخاب برای شبیه‌سازی سیستم‌عامل‌های قدیمی در فارسی است */
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        /* بدنه اصلی پنجره ویندوز */
+        .win-dialog {
+            background-color: #c0c0c0; /* خاکستری کلاسیک */
+            width: 85vw;
+            max-width: 400px;
+            
+            /* ایجاد افکت سه‌بعدی و برجسته (لبه‌های روشن در بالا/چپ و تاریک در پایین/راست) */
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            
+            /* سایه داخلی برای تکمیل حالت برجسته بودن */
+            box-shadow: inset -1px -1px #808080, inset 1px 1px #dfdfdf, 4px 4px 0px rgba(0,0,0,0.2);
+            padding: 3px;
+        }
+
+        /* نوار آبی بالای پنجره (Title Bar) */
+        .title-bar {
+            background-color: #000080;
+            color: #ffffff;
+            padding: 4px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            direction: ltr; /* چپ‌چین کردن دکمه و تیتر برای حفظ اصالت ویندوز */
+        }
+
+        .title-text {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            outline: none;
+        }
+
+        /* دکمه بستن (X) در نوار عنوان */
+        .close-btn {
+            background-color: #c0c0c0;
+            color: #000000;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.75rem;
+            border-top: 1px solid #ffffff;
+            border-left: 1px solid #ffffff;
+            border-right: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+            cursor: pointer;
+        }
+
+        /* محتوای داخلی پنجره (تمرکز روی متن) */
+        .win-content {
+            padding: 30px 20px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* استایل اختصاصی متنی که کاربر تایپ می‌کند */
+        .text-box {
+            color: #000000;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center; /* متن کاملاً وسط‌چین */
+            line-height: 1.6;
+            width: 100%;
+            outline: none;
+            cursor: text;
+            min-height: 40px;
+        }
+
+        /* دکمه OK کلاسیک در پایین پنجره */
+        .ok-btn {
+            background-color: #c0c0c0;
+            padding: 6px 30px;
+            font-family: Tahoma, Arial, sans-serif;
+            font-size: 0.9rem;
+            color: #000000;
+            
+            /* حاشیه سه‌بعدی برای دکمه */
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            box-shadow: inset -1px -1px #808080, inset 1px 1px #dfdfdf;
+            
+            /* خط‌چین دور متن دکمه (ویژگی معروف فوکوس در ویندوز) */
+            outline: 1px dotted #000000;
+            outline-offset: -4px;
+        }
+
+        /* افکت کلیک روی دکمه OK */
+        .ok-btn:active {
+            border-top: 2px solid #000000;
+            border-left: 2px solid #000000;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+            box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+            outline-offset: -5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="win-dialog">
+        <!-- نوار عنوان پنجره (آبی تیره) -->
+        <div class="title-bar">
+            <!-- تیتر پنجره (قابل ویرایش) -->
+            <div class="title-text" contenteditable="true">
+                System Message
+            </div>
+            <!-- دکمه بستن -->
+            <div class="close-btn">X</div>
+        </div>
+
+        <!-- محتوای اصلی پنجره -->
+        <div class="win-content">
+            <!-- متن اصلی با تمرکز بالا و وسط‌چین (قابل ویرایش) -->
+            <div class="text-box" contenteditable="true" dir="auto">
+                شما یک پیام مهم دارید!<br>
+                اینجا کلیک کنید تا متن خود را بنویسید.
+            </div>
+            
+            <!-- دکمه تایید تزئینی -->
+            <div class="ok-btn">OK</div>
+        </div>
+    </div>
+
+</body>
+</html>

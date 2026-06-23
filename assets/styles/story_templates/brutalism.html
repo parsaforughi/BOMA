@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قالب استوری - سبک بروتالیسم</title>
+
+    <style>
+        body {
+            /* یک پس‌زمینه خاکستری خنثی تا بلوک زرد و مشکی کاملاً به چشم بیاید */
+            background-color: #d4d4d4;
+            /* پترن نقطه‌ای ظریف برای القای حس چاپ‌های قدیمی و خام (اختیاری) */
+            background-image: radial-gradient(#999999 1px, transparent 1px);
+            background-size: 20px 20px;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Arial Black', Impact, Tahoma, sans-serif;
+        }
+
+        /* بلوک اصلی بروتال */
+        .brutalist-card {
+            /* زرد تند و اخطاری که در بروتالیسم بسیار پرکاربرد است */
+            background-color: #fbff00;
+            
+            /* حاشیه بسیار ضخیم و خشن */
+            border: 4px solid #000000;
+            
+            /* ویژگی کلیدی بروتالیسم: سایه کاملاً تخت و شارپ (بدون Blur) */
+            box-shadow: 12px 12px 0px #000000;
+            
+            /* گوشه‌های کاملاً تیز (بدون border-radius) برای حفظ خشن بودن طرح */
+            border-radius: 0;
+            
+            padding: 40px 30px;
+            width: 85vw;
+            max-width: 380px;
+            
+            /* چیدمان برای تمرکز کامل روی متن */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* انیمیشن خشک و مکانیکی برای کلیک */
+            transition: transform 0.1s step-end, box-shadow 0.1s step-end;
+        }
+
+        /* افکت هنگام کلیک (فشرده شدن دکمه فیزیکی) */
+        .brutalist-card:focus-within {
+            transform: translate(6px, 6px);
+            box-shadow: 6px 6px 0px #000000;
+        }
+
+        /* استایل متنی که کاربر تایپ می‌کند */
+        .text-box {
+            color: #000000;
+            /* فونت درشت و سنگین */
+            font-size: 1.8rem;
+            font-weight: 900;
+            line-height: 1.4;
+            
+            /* متن کاملاً وسط‌چین */
+            text-align: center;
+            width: 100%;
+            outline: none;
+            cursor: text;
+        }
+
+        /* یک افکت هایلایت خشن پشت متن موقع انتخاب/تایپ (فقط برای مرورگر) */
+        .text-box::selection {
+            background-color: #000000;
+            color: #fbff00;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="brutalist-card">
+        <!-- تنها یک باکس برای نوشتن، بدون هیچ حواس‌پرتی -->
+        <div class="text-box" contenteditable="true" dir="auto">
+            متن جسورانه شما<br>
+            در مرکز توجه!
+        </div>
+    </div>
+
+</body>
+</html>

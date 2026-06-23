@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قالب استوری - موزیک پلیر وسط‌چین</title>
+
+    <style>
+        body {
+            /* پس‌زمینه برای تست افکت شیشه‌ای */
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* کادر اصلی پلیر با چیدمان عمودی */
+        .music-widget {
+            width: 85vw;
+            max-width: 320px;
+            
+            background: rgba(20, 20, 20, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            
+            border-radius: 28px;
+            padding: 30px 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            
+            /* تنظیمات چیدمان عمودی و وسط‌چین */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* کاور آلبوم بزرگ در مرکز */
+        .album-cover {
+            width: 140px;
+            height: 140px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .album-cover svg {
+            width: 50px;
+            height: 50px;
+            fill: rgba(0, 0, 0, 0.2);
+        }
+
+        /* تک باکس متن با قابلیت وسط‌چین */
+        .single-text-box {
+            color: #ffffff;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center; /* وسط‌چین کردن متن */
+            line-height: 1.5;
+            width: 100%;
+            outline: none;
+            cursor: text;
+            min-height: 35px;
+        }
+
+        /* افکت ویرایش متن */
+        .single-text-box:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        /* نوار زمان */
+        .progress-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            direction: ltr; /* چپ‌به‌راست برای نوار زمان */
+        }
+
+        .time {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-variant-numeric: tabular-nums;
+            outline: none;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 45%;
+            background: #ffffff;
+            border-radius: 3px;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+
+        /* دکمه‌های کنترل */
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 35px;
+            direction: ltr;
+            width: 100%;
+        }
+
+        .controls svg {
+            fill: #ffffff;
+            cursor: pointer;
+        }
+
+        .btn-side {
+            width: 26px;
+            height: 26px;
+            opacity: 0.8;
+        }
+
+        .btn-play {
+            width: 55px;
+            height: 55px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="music-widget">
+        
+        <!-- کاور آلبوم -->
+        <div class="album-cover">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+        </div>
+        
+        <!-- تنها باکس متن وسط‌چین -->
+        <div class="single-text-box" contenteditable="true" dir="auto">
+            متن شما در اینجا قرار می‌گیرد...
+        </div>
+
+        <!-- نوار زمان -->
+        <div class="progress-section">
+            <span class="time" contenteditable="true">1:24</span>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <span class="time" contenteditable="true">3:45</span>
+        </div>
+
+        <!-- دکمه‌های کنترل -->
+        <div class="controls">
+            <svg class="btn-side" viewBox="0 0 24 24">
+                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+            </svg>
+            <svg class="btn-play" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+            </svg>
+            <svg class="btn-side" viewBox="0 0 24 24">
+                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+            </svg>
+        </div>
+
+    </div>
+
+</body>
+</html>

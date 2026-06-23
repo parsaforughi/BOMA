@@ -1,0 +1,35 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 960 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="BG" clip-path="url(#clip0_0_23)">
+<g id="Ellipse 3" filter="url(#filter0_i_0_23)">
+<circle cx="897" cy="661" r="897" fill="var(--fill-0, #D9D9D9)" fill-opacity="0.01"/>
+</g>
+<g id="Ellipse 1" filter="url(#filter1_i_0_23)">
+<circle cx="696" cy="661" r="505" fill="var(--fill-0, #D9D9D9)" fill-opacity="0.01"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_i_0_23" x="0" y="-236" width="1794" height="1798" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="102"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_23"/>
+</filter>
+<filter id="filter1_i_0_23" x="191" y="156" width="1010" height="1014" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="102"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_23"/>
+</filter>
+<clipPath id="clip0_0_23">
+<rect width="960" height="640" fill="white"/>
+</clipPath>
+</defs>
+</svg>

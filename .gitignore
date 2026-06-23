@@ -1,0 +1,79 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+*.zip
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.xapk_inspect/
+cover style/
+style_extract.json
+style_extract_with_css.json
+bugreport-*.zip
+.swiftpm/
+
+# Design source files (not shipped in app bundle)
+*.psd
+assets/styles/10 Intermediate Style/
+assets/styles/5 Beginner Style (Pack 1)/
+assets/styles/5 Beginner Style (Pack 2)/
+assets/styles/Mockup.psd
+assets/styles/Mockup-Abolfazl Nouri.jpg
+assets/styles/pishrafte/source.png
+assets/styles/BW/*.psd
+assets/styles/**/*.psd
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/android/build/
+/android/.gradle/
+/android/app/build/
+/ios/Pods/
+/ios/Runner.xcworkspace/
+/linux/flutter/ephemeral/
+/macos/Flutter/ephemeral/
+/windows/flutter/ephemeral/
+/server/node_modules/
+/server/.env
+/server/.env.local
+/server/.env.production
+/server/npm-debug.log*
+/server/yarn-error.log*
+/server/pnpm-debug.log*
+/\.gradle-user-home/
+/\.cursor/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
