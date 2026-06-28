@@ -387,6 +387,14 @@ app.get('/admin/api/users', requireAdmin, (req, res) => {
   res.json({ ok: true, total, page, limit, users });
 });
 
+// مشاهده OTP فعلی یک شماره (فقط برای تست — در production حذف کنید)
+app.get('/admin/api/otp/:phone', requireAdmin, (req, res) => {
+  const row = db.prepare('SELECT code, expires_at FROM otp_codes WHERE phone = ?').get(req.params.phone);
+  if (!row) return res.json({ ok: false, error: 'not found' });
+  const expired = row.expires_at < Math.floor(Date.now() / 1000);
+  res.json({ ok: true, code: row.code, expired });
+});
+
 // بروزرسانی تنظیمات force update
 app.post('/admin/api/config', requireAdmin, (req, res) => {
   const allowed = ['min_build_number','latest_build_number','latest_version',
@@ -558,6 +566,7 @@ tr:hover td{background:#1f2937}
   <div class="nav-item" onclick="showTab('users')">👥 کاربران</div>
   <div class="nav-item" onclick="showTab('update')">🔄 بروزرسانی اجباری</div>
   <div class="nav-item" onclick="showTab('push')">🔔 نوتیفیکیشن</div>
+  <div class="nav-item" onclick="showTab('devtools')">🛠 ابزار توسعه</div>
 </div>
 
 <!-- Main -->
@@ -645,6 +654,34 @@ tr:hover td{background:#1f2937}
           <tbody id="notif-tbody"><tr><td colspan="5" style="text-align:center;padding:30px;color:#6b7280">در حال بارگذاری...</td></tr></tbody>
         </table>
       </div>
+    </div>
+  </div>
+
+  <!-- DEV TOOLS -->
+  <div id="tab-devtools" class="tab-pane">
+    <h2 style="font-size:20px;color:#fff;margin-bottom:24px">ابزار توسعه</h2>
+
+    <div class="section">
+      <h3>🔑 مشاهده کد OTP (برای تست)</h3>
+      <p style="font-size:12px;color:#6b7280;margin-bottom:16px">وقتی SMS.ir تنظیم نیست، کد فقط توی این بخش قابل مشاهدست</p>
+      <div class="form-row">
+        <label>شماره موبایل</label>
+        <input type="text" id="otp-phone" placeholder="09xxxxxxxxx" dir="ltr">
+        <button class="btn sm" onclick="lookupOtp()">مشاهده کد</button>
+      </div>
+      <div id="otp-result" style="margin-top:12px"></div>
+    </div>
+
+    <div class="section">
+      <h3>📡 وضعیت سرویس‌ها</h3>
+      <div id="service-status" style="font-size:13px;line-height:2">در حال بررسی...</div>
+    </div>
+
+    <div class="section">
+      <h3>📊 تست آنالیتیکس</h3>
+      <p style="font-size:12px;color:#6b7280;margin-bottom:12px">یه بازدید آزمایشی ثبت کن تا مطمئن بشی اندپوینت کار می‌کنه</p>
+      <button class="btn sm" onclick="testOpen()">ثبت بازدید آزمایشی</button>
+      <div id="open-result" style="margin-top:12px"></div>
     </div>
   </div>
 
@@ -805,8 +842,42 @@ async function loadNotifHistory() {
   </tr>\`).join('');
 }
 
+// ─── DEV TOOLS
+async function lookupOtp() {
+  const phone = document.getElementById('otp-phone').value.trim();
+  if (!phone) return;
+  const r = await fetch('/admin/api/otp/' + phone).then(r=>r.json());
+  const el = document.getElementById('otp-result');
+  if (r.ok) {
+    el.innerHTML = r.expired
+      ? '<div class="alert err">⛔ کد منقضی شده: ' + r.code + '</div>'
+      : '<div class="alert ok">✅ کد فعلی: <strong style="font-size:18px;letter-spacing:4px">' + r.code + '</strong></div>';
+  } else {
+    el.innerHTML = '<div class="alert err">❌ کدی برای این شماره پیدا نشد</div>';
+  }
+}
+
+async function testOpen() {
+  const r = await fetch('/api/analytics/open', { method: 'POST', headers: {'Content-Type':'application/json'} }).then(r=>r.json());
+  const el = document.getElementById('open-result');
+  el.innerHTML = r.ok
+    ? '<div class="alert ok">✅ بازدید ثبت شد — داشبورد رو چک کن</div>'
+    : '<div class="alert err">❌ خطا: ' + JSON.stringify(r) + '</div>';
+  loadDashboard();
+}
+
+async function loadServiceStatus() {
+  const el = document.getElementById('service-status');
+  const health = await fetch('/health').then(r=>r.json()).catch(()=>({ok:false}));
+  el.innerHTML = \`
+    <div>سرور: <span style="color:\${health.ok?'#22c55e':'#ef4444'}">\${health.ok?'✅ آنلاین':'❌ آفلاین'}</span></div>
+    <div style="margin-top:4px;color:#6b7280;font-size:12px">برای تست SMS.ir، شماره بزن و OTP بخواه — اگه کد آمد یعنی سرور کار می‌کنه. اگه SMS نیومد، SMS_IR_API_KEY رو چک کن.</div>
+  \`;
+}
+
 // ─── INIT
 loadDashboard();
+loadServiceStatus();
 setInterval(loadDashboard, 30000); // رفرش هر ۳۰ ثانیه
 </script>
 </body>
