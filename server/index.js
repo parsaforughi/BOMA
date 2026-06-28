@@ -176,19 +176,18 @@ async function sendOtpSms(phone, code) {
   const templateId  = process.env.SMS_IR_TEMPLATE_ID || '100000'; // ID قالب OTP در sms.ir
 
   if (apiKey) {
-    // sms.ir Verify API
-    const res = await fetch('https://api.sms.ir/v1/send/verify', {
+    // sms.ir — ارسال پیام ساده بدون قالب
+    const lineNumber = process.env.SMS_IR_LINE_NUMBER || ''; // شماره خط (اختیاری)
+    const res = await fetch('https://api.sms.ir/v1/send/bulk', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
       },
       body: JSON.stringify({
-        mobile: phone,
-        templateId: Number(templateId),
-        parameters: [
-          { name: 'Code', value: code },
-        ],
+        lineNumber,
+        mobiles: [phone],
+        messageText: `کد تأیید بوما: ${code}\nاین کد ۲ دقیقه معتبر است.`,
       }),
     });
     const data = await res.json();
