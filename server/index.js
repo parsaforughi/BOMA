@@ -90,8 +90,54 @@ function setConfig(key, value) {
 const JWT_SECRET   = process.env.JWT_SECRET    || 'boma_dev_secret_CHANGE_IN_PRODUCTION';
 const ADMIN_USER   = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASS   = process.env.ADMIN_PASSWORD || 'boma1234';
-const FCM_SERVER_KEY = process.env.FCM_SERVER_KEY || null;
 const OTP_TTL      = 120; // seconds
+
+// FCM v1 — service account JSON (as string in env var)
+let FCM_SERVICE_ACCOUNT = null;
+try {
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    FCM_SERVICE_ACCOUNT = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  }
+} catch (e) {
+  console.warn('FIREBASE_SERVICE_ACCOUNT parse error:', e.message);
+}
+
+// گرفتن OAuth2 access token از Google برای FCM v1
+async function getFcmAccessToken() {
+  if (!FCM_SERVICE_ACCOUNT) throw new Error('FIREBASE_SERVICE_ACCOUNT not configured');
+
+  const { client_email, private_key, project_id } = FCM_SERVICE_ACCOUNT;
+  const now = Math.floor(Date.now() / 1000);
+
+  // ساخت JWT برای Google OAuth2
+  const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+  const payload = Buffer.from(JSON.stringify({
+    iss: client_email,
+    scope: 'https://www.googleapis.com/auth/firebase.messaging',
+    aud: 'https://oauth2.googleapis.com/token',
+    exp: now + 3600,
+    iat: now,
+  })).toString('base64url');
+
+  const signingInput = `${header}.${payload}`;
+  const { createSign } = require('crypto');
+  const signer = createSign('RSA-SHA256');
+  signer.update(signingInput);
+  const signature = signer.sign(private_key, 'base64url');
+  const assertion = `${signingInput}.${signature}`;
+
+  const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion,
+    }),
+  });
+  const tokenData = await tokenRes.json();
+  if (!tokenData.access_token) throw new Error(`Token error: ${JSON.stringify(tokenData)}`);
+  return { access_token: tokenData.access_token, project_id };
+}
 
 // ═══════════════════════════════════════════════════════════
 // MIDDLEWARE
@@ -327,20 +373,19 @@ app.post('/admin/api/config', requireAdmin, (req, res) => {
   res.json({ ok: true });
 });
 
-// ارسال نوتیف‌کیشن از طریق FCM
+// ارسال نوتیف‌کیشن از طریق FCM v1
 app.post('/admin/api/notify', requireAdmin, async (req, res) => {
   const { title, body, target = 'all' } = req.body;
   if (!title || !body) return res.status(400).json({ ok: false, error: 'title and body required' });
 
-  if (!FCM_SERVER_KEY) {
-    return res.status(503).json({ ok: false, error: 'FCM_SERVER_KEY not configured' });
+  if (!FCM_SERVICE_ACCOUNT) {
+    return res.status(503).json({ ok: false, error: 'FIREBASE_SERVICE_ACCOUNT not configured' });
   }
 
   let tokens = [];
   if (target === 'all') {
     tokens = db.prepare('SELECT fcm_token FROM users WHERE fcm_token IS NOT NULL').all().map(r => r.fcm_token);
   } else {
-    // target = phone number
     const u = db.prepare('SELECT fcm_token FROM users WHERE phone = ?').get(target);
     if (u?.fcm_token) tokens = [u.fcm_token];
   }
@@ -349,30 +394,33 @@ app.post('/admin/api/notify', requireAdmin, async (req, res) => {
     return res.json({ ok: true, sent: 0, message: 'no FCM tokens found' });
   }
 
-  // FCM Legacy HTTP API (batch — up to 1000 per request)
-  const chunks = [];
-  for (let i = 0; i < tokens.length; i += 500) chunks.push(tokens.slice(i, i + 500));
-
   let totalSent = 0;
-  for (const chunk of chunks) {
-    try {
-      const fcmRes = await fetch('https://fcm.googleapis.com/fcm/send', {
+  try {
+    const { access_token, project_id } = await getFcmAccessToken();
+    const fcmUrl = `https://fcm.googleapis.com/v1/projects/${project_id}/messages:send`;
+
+    // FCM v1 یک پیام در هر درخواست — concurrent برای سرعت
+    const results = await Promise.allSettled(tokens.map(token =>
+      fetch(fcmUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `key=${FCM_SERVER_KEY}`,
+          'Authorization': `Bearer ${access_token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          registration_ids: chunk,
-          notification: { title, body },
-          data: { title, body },
+          message: {
+            token,
+            notification: { title, body },
+            data: { title, body },
+          },
         }),
-      });
-      const data = await fcmRes.json();
-      totalSent += data.success ?? 0;
-    } catch (err) {
-      console.error('FCM error:', err.message);
-    }
+      }).then(r => r.ok ? 1 : 0)
+    ));
+
+    totalSent = results.reduce((sum, r) => sum + (r.status === 'fulfilled' ? r.value : 0), 0);
+  } catch (err) {
+    console.error('FCM v1 error:', err.message);
+    return res.status(500).json({ ok: false, error: err.message });
   }
 
   db.prepare(`INSERT INTO notifications (title, body, target, sent_count) VALUES (?, ?, ?, ?)`)
