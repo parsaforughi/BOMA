@@ -6,9 +6,25 @@ import '../config/app_config.dart';
 class AnalyticsService {
   AnalyticsService._();
 
-  static Future<void> ping({required String? token}) async {
-    if (!AppConfig.hasApi || token == null) return;
+  /// بدون نیاز به login — فقط شمارش open (از splash)
+  static Future<void> open() async {
+    if (!AppConfig.hasApi) return;
+    try {
+      await http.post(
+        AppConfig.authUri('/api/analytics/open'),
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(const Duration(seconds: 5));
+    } catch (e) {
+      debugPrint('[Analytics] open failed: $e');
+    }
+  }
 
+  /// با token — شمارش open + کاربر یکتا
+  static Future<void> ping({required String? token}) async {
+    if (!AppConfig.hasApi) return;
+    if (token == null) {
+      return open();
+    }
     try {
       await http.post(
         AppConfig.authUri('/api/analytics/ping'),

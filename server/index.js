@@ -172,20 +172,33 @@ function requireToken(req, res, next) {
 // SMS / OTP
 // ═══════════════════════════════════════════════════════════
 async function sendOtpSms(phone, code) {
-  const apiUrl = process.env.OTP_API_URL;
-  const apiKey = process.env.OTP_API_KEY;
+  const apiKey      = process.env.SMS_IR_API_KEY;
+  const templateId  = process.env.SMS_IR_TEMPLATE_ID || '100000'; // ID قالب OTP در sms.ir
 
-  if (apiUrl && apiKey) {
-    const res = await fetch(apiUrl, {
+  if (apiKey) {
+    // sms.ir Verify API
+    const res = await fetch('https://api.sms.ir/v1/send/verify', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
-      body: JSON.stringify({ receptor: phone, token: code }),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+      },
+      body: JSON.stringify({
+        mobile: phone,
+        templateId: Number(templateId),
+        parameters: [
+          { name: 'Code', value: code },
+        ],
+      }),
     });
-    if (!res.ok) throw new Error(`SMS gateway ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    if (!res.ok || data.status !== 1) {
+      throw new Error(`sms.ir error: ${JSON.stringify(data)}`);
+    }
     return;
   }
 
-  // Dev fallback
+  // Dev fallback — کد رو توی لاگ نشون بده
   console.log(`[OTP DEV]  ${phone}  →  ${code}`);
 }
 
@@ -314,12 +327,24 @@ app.post('/api/auth/verify-otp', (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════
-// ROUTES — ANALYTICS PING (اپ هر بار که باز می‌شه صدا می‌زنه)
+// ROUTES — ANALYTICS PING
 // ═══════════════════════════════════════════════════════════
+
+// بدون login — فقط open count (برای splash)
+app.post('/api/analytics/open', (req, res) => {
+  const today = new Date().toISOString().slice(0, 10);
+  db.prepare(`
+    INSERT INTO daily_stats (date, opens, unique_users)
+    VALUES (?, 1, 0)
+    ON CONFLICT(date) DO UPDATE SET opens = opens + 1
+  `).run(today);
+  res.json({ ok: true });
+});
+
+// با login — open + unique user tracking
 app.post('/api/analytics/ping', requireToken, (req, res) => {
   const userId = req.user.sub;
 
-  // آپدیت fcm_token اگر فرستاده شده
   if (req.body.fcm_token) {
     db.prepare('UPDATE users SET fcm_token = ? WHERE id = ?').run(req.body.fcm_token, userId);
   }
