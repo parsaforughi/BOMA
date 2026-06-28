@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../services/app_update_service.dart';
+import '../../services/analytics_service.dart';
+import '../../services/auth_service.dart';
 import '../../widgets/app_update_lifecycle_guard.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -34,6 +36,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Future<void> _bootstrap() async {
     await Future<void>.delayed(const Duration(seconds: 2));
     if (!mounted) return;
+
+    // ثبت بازدید روزانه در سرور
+    final token = ref.read(authProvider).user?.token;
+    AnalyticsService.ping(token: token);
 
     final result = await AppUpdateService.checkForRequiredUpdate();
     if (!mounted) return;
@@ -74,7 +80,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               ),
               child: Image.asset(
                 'assets/images/splash.png',
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
                 width: double.infinity,
                 height: double.infinity,
               ),
