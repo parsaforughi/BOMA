@@ -15,12 +15,14 @@ class _BackgroundItem {
   final String id;
   final Color? color;
   final List<Color>? gradient;
+  final String? imagePath; // مسیر asset تصویر
 
   const _BackgroundItem({
     required this.id,
     this.color,
     this.gradient,
-  }) : assert(color != null || gradient != null);
+    this.imagePath,
+  }) : assert(color != null || gradient != null || imagePath != null);
 }
 
 class StickerPickerPanel extends ConsumerStatefulWidget {
@@ -53,6 +55,74 @@ class _StickerPickerPanelState extends ConsumerState<StickerPickerPanel> {
 
   Map<String, List<_BackgroundItem>> _buildBackgroundPacks() {
     return const {
+      'کاراکتر ۳D': [
+        _BackgroundItem(id: '3d_1',  imagePath: 'assets/styles/backgrounds/3D Character/1.jpg'),
+        _BackgroundItem(id: '3d_2',  imagePath: 'assets/styles/backgrounds/3D Character/2.jpg'),
+        _BackgroundItem(id: '3d_3',  imagePath: 'assets/styles/backgrounds/3D Character/3.jpg'),
+        _BackgroundItem(id: '3d_4',  imagePath: 'assets/styles/backgrounds/3D Character/4.jpg'),
+        _BackgroundItem(id: '3d_5',  imagePath: 'assets/styles/backgrounds/3D Character/5.jpg'),
+        _BackgroundItem(id: '3d_6',  imagePath: 'assets/styles/backgrounds/3D Character/6.jpg'),
+        _BackgroundItem(id: '3d_7',  imagePath: 'assets/styles/backgrounds/3D Character/7.jpg'),
+        _BackgroundItem(id: '3d_8',  imagePath: 'assets/styles/backgrounds/3D Character/8.jpg'),
+        _BackgroundItem(id: '3d_9',  imagePath: 'assets/styles/backgrounds/3D Character/9.jpg'),
+        _BackgroundItem(id: '3d_10', imagePath: 'assets/styles/backgrounds/3D Character/10.jpg'),
+        _BackgroundItem(id: '3d_11', imagePath: 'assets/styles/backgrounds/3D Character/11.jpg'),
+        _BackgroundItem(id: '3d_12', imagePath: 'assets/styles/backgrounds/3D Character/12.jpg'),
+        _BackgroundItem(id: '3d_13', imagePath: 'assets/styles/backgrounds/3D Character/13.jpg'),
+        _BackgroundItem(id: '3d_14', imagePath: 'assets/styles/backgrounds/3D Character/14.jpg'),
+        _BackgroundItem(id: '3d_15', imagePath: 'assets/styles/backgrounds/3D Character/15.jpg'),
+        _BackgroundItem(id: '3d_16', imagePath: 'assets/styles/backgrounds/3D Character/16.jpg'),
+        _BackgroundItem(id: '3d_17', imagePath: 'assets/styles/backgrounds/3D Character/17.jpg'),
+        _BackgroundItem(id: '3d_18', imagePath: 'assets/styles/backgrounds/3D Character/18.jpg'),
+        _BackgroundItem(id: '3d_19', imagePath: 'assets/styles/backgrounds/3D Character/19.jpg'),
+        _BackgroundItem(id: '3d_20', imagePath: 'assets/styles/backgrounds/3D Character/20.jpg'),
+        _BackgroundItem(id: '3d_21', imagePath: 'assets/styles/backgrounds/3D Character/21.jpg'),
+        _BackgroundItem(id: '3d_22', imagePath: 'assets/styles/backgrounds/3D Character/22.jpg'),
+        _BackgroundItem(id: '3d_23', imagePath: 'assets/styles/backgrounds/3D Character/23.jpg'),
+      ],
+      'ماشین': [
+        _BackgroundItem(id: 'car_1',  imagePath: 'assets/styles/backgrounds/Car/1.jpg'),
+        _BackgroundItem(id: 'car_2',  imagePath: 'assets/styles/backgrounds/Car/2.jpg'),
+        _BackgroundItem(id: 'car_3',  imagePath: 'assets/styles/backgrounds/Car/3.jpg'),
+        _BackgroundItem(id: 'car_4',  imagePath: 'assets/styles/backgrounds/Car/4.jpg'),
+        _BackgroundItem(id: 'car_5',  imagePath: 'assets/styles/backgrounds/Car/5.jpg'),
+        _BackgroundItem(id: 'car_6',  imagePath: 'assets/styles/backgrounds/Car/6.jpg'),
+        _BackgroundItem(id: 'car_7',  imagePath: 'assets/styles/backgrounds/Car/7.jpg'),
+        _BackgroundItem(id: 'car_8',  imagePath: 'assets/styles/backgrounds/Car/8.jpg'),
+        _BackgroundItem(id: 'car_9',  imagePath: 'assets/styles/backgrounds/Car/9.jpg'),
+        _BackgroundItem(id: 'car_10', imagePath: 'assets/styles/backgrounds/Car/10.jpg'),
+        _BackgroundItem(id: 'car_11', imagePath: 'assets/styles/backgrounds/Car/11.jpg'),
+        _BackgroundItem(id: 'car_12', imagePath: 'assets/styles/backgrounds/Car/12.jpg'),
+        _BackgroundItem(id: 'car_13', imagePath: 'assets/styles/backgrounds/Car/13.jpg'),
+        _BackgroundItem(id: 'car_14', imagePath: 'assets/styles/backgrounds/Car/14.jpg'),
+        _BackgroundItem(id: 'car_15', imagePath: 'assets/styles/backgrounds/Car/15.jpg'),
+        _BackgroundItem(id: 'car_16', imagePath: 'assets/styles/backgrounds/Car/16.jpg'),
+        _BackgroundItem(id: 'car_17', imagePath: 'assets/styles/backgrounds/Car/17.jpg'),
+      ],
+      'گلس مورفیسم': [
+        _BackgroundItem(id: 'glass_1',  imagePath: 'assets/styles/backgrounds/Glass Morphism/1.jpg'),
+        _BackgroundItem(id: 'glass_2',  imagePath: 'assets/styles/backgrounds/Glass Morphism/2.jpg'),
+        _BackgroundItem(id: 'glass_3',  imagePath: 'assets/styles/backgrounds/Glass Morphism/3.jpg'),
+        _BackgroundItem(id: 'glass_4',  imagePath: 'assets/styles/backgrounds/Glass Morphism/4.jpg'),
+        _BackgroundItem(id: 'glass_5',  imagePath: 'assets/styles/backgrounds/Glass Morphism/5.jpg'),
+        _BackgroundItem(id: 'glass_6',  imagePath: 'assets/styles/backgrounds/Glass Morphism/6.jpg'),
+        _BackgroundItem(id: 'glass_7',  imagePath: 'assets/styles/backgrounds/Glass Morphism/7.jpg'),
+        _BackgroundItem(id: 'glass_8',  imagePath: 'assets/styles/backgrounds/Glass Morphism/8.jpg'),
+        _BackgroundItem(id: 'glass_9',  imagePath: 'assets/styles/backgrounds/Glass Morphism/9.jpg'),
+        _BackgroundItem(id: 'glass_10', imagePath: 'assets/styles/backgrounds/Glass Morphism/10.jpg'),
+      ],
+      'نورپردازی': [
+        _BackgroundItem(id: 'lights_1',  imagePath: 'assets/styles/backgrounds/Lights/1.jpg'),
+        _BackgroundItem(id: 'lights_2',  imagePath: 'assets/styles/backgrounds/Lights/2.jpg'),
+        _BackgroundItem(id: 'lights_3',  imagePath: 'assets/styles/backgrounds/Lights/3.jpg'),
+        _BackgroundItem(id: 'lights_4',  imagePath: 'assets/styles/backgrounds/Lights/4.jpg'),
+        _BackgroundItem(id: 'lights_5',  imagePath: 'assets/styles/backgrounds/Lights/5.jpg'),
+        _BackgroundItem(id: 'lights_6',  imagePath: 'assets/styles/backgrounds/Lights/6.jpg'),
+        _BackgroundItem(id: 'lights_7',  imagePath: 'assets/styles/backgrounds/Lights/7.jpg'),
+        _BackgroundItem(id: 'lights_8',  imagePath: 'assets/styles/backgrounds/Lights/8.jpg'),
+        _BackgroundItem(id: 'lights_9',  imagePath: 'assets/styles/backgrounds/Lights/9.jpg'),
+        _BackgroundItem(id: 'lights_10', imagePath: 'assets/styles/backgrounds/Lights/10.jpg'),
+      ],
       'طبیعت': [
         _BackgroundItem(id: 'nature_0', gradient: [Color(0xFFFF4E25), Color(0xFF2FA8E8), Color(0xFFE4525D)]),
         _BackgroundItem(id: 'nature_1', gradient: [Color(0xFF240046), Color(0xFF6D2BFF), Color(0xFF006D77)]),
@@ -122,6 +192,12 @@ class _StickerPickerPanelState extends ConsumerState<StickerPickerPanel> {
   }
 
   Future<Uint8List?> _renderBackgroundImage(_BackgroundItem item) async {
+    // اگر تصویر asset داره، مستقیم بایت‌هاشو برگردون
+    if (item.imagePath != null) {
+      final data = await rootBundle.load(item.imagePath!);
+      return data.buffer.asUint8List();
+    }
+
     const width = 1080;
     const height = 1920;
     final w = width.toDouble();
@@ -524,19 +600,26 @@ class _BackgroundCategoryCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: item?.color ?? const Color(0xFF2D313A),
-            gradient: item?.gradient != null
-                ? LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: item!.gradient!,
-                  )
-                : null,
-          ),
-        ),
+        child: item?.imagePath != null
+            ? Image.asset(
+                item!.imagePath!,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                errorBuilder: (_, __, ___) => Container(color: const Color(0xFF2D313A)),
+              )
+            : Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: item?.color ?? const Color(0xFF2D313A),
+                  gradient: item?.gradient != null
+                      ? LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: item!.gradient!,
+                        )
+                      : null,
+                ),
+              ),
       ),
     );
   }
@@ -627,19 +710,26 @@ class _BackgroundCard extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: item.color ?? const Color(0xFF2D313A),
-                  gradient: item.gradient != null
-                      ? LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: item.gradient!,
-                        )
-                      : null,
-                ),
-              ),
+              child: item.imagePath != null
+                  ? Image.asset(
+                      item.imagePath!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      errorBuilder: (_, __, ___) => Container(color: const Color(0xFF2D313A)),
+                    )
+                  : Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: item.color ?? const Color(0xFF2D313A),
+                        gradient: item.gradient != null
+                            ? LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: item.gradient!,
+                              )
+                            : null,
+                      ),
+                    ),
             ),
           ),
           _BottomHeartBar(isActive: isFavorite, onTap: onFavoriteTap),

@@ -47,10 +47,15 @@ flutter:
     - assets/images/
     - assets/styles/
     - assets/styles/pishrafte/
+    - assets/styles/beginner/
     - assets/styles/materialized/
     - assets/styles/materialized/tex/
     - assets/styles/electric/
     - assets/figma/
+    - assets/styles/backgrounds/3D Character/
+    - assets/styles/backgrounds/Car/
+    - assets/styles/backgrounds/Glass Morphism/
+    - assets/styles/backgrounds/Lights/
     - assets/stickers/Arrow/
     - assets/stickers/Emoji/
     - assets/stickers/Frame/
