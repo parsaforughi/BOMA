@@ -4,11 +4,11 @@
 
 # Bstory
 
-Flutter client for styled story text. The product is **Bstory**. This repository is **BOMA**. Built for Nouri.
+Flutter app for styled story text. The product is **Bstory**. This repository is **BOMA**.
 
 Type on a canvas. Choose a font. Apply a style. Place a sticker. Export a PNG.
 
-The theme is dark. Phone OTP is wired; without `BOMA_API_BASE` the client stays offline. Premium screens exist. Features are currently unlocked.
+The theme is dark. Phone OTP is wired; without `BOMA_API_BASE` the app stays offline. Premium screens exist. Features are currently unlocked.
 
 ## Editor
 
@@ -16,7 +16,7 @@ The home canvas is the product. A four-tab toolbar — font, style, color, creat
 
 ## Companion
 
-`server/` is a small Node process for OTP, a version check, and open/ping counts. The Flutter client calls it only when `BOMA_API_BASE` is set.
+`server/` is a small Node process for OTP, a version check, and open/ping counts. The app calls it only when `BOMA_API_BASE` is set.
 
 ## Run
 
