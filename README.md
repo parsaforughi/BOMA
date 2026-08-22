@@ -4,11 +4,11 @@
 
 # Bstory
 
-Flutter client for styled Persian story text. The product is **Bstory**. This repository is **BOMA**. Built for Nouri.
+Flutter client for styled story text. The product is **Bstory**. This repository is **BOMA**. Built for Nouri.
 
 Type on a canvas. Choose a font. Apply a style. Place a sticker. Export a PNG.
 
-Locales are Persian, Arabic, and English. Layout is RTL when it should be. The theme is dark. Iranian phone OTP is wired; without `BOMA_API_BASE` the client stays offline. Premium screens exist. Features are currently unlocked.
+The theme is dark. Phone OTP is wired; without `BOMA_API_BASE` the client stays offline. Premium screens exist. Features are currently unlocked.
 
 ## Editor
 

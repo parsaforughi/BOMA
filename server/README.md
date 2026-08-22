@@ -1,29 +1,29 @@
-# BOMA Server (Railway)
+# BOMA Server
 
-بک‌اند اپ بوما — OTP Auth، آنالیتیکس، پنل ادمین، force update و push notification.
+Companion process for OTP auth, analytics, an admin panel, force update, and push notification.
 
-## Deploy روی Railway
+## Deploy
 
-1. پروژه جدید بساز و ریپو را وصل کن.
-2. **Root directory** را `server` بگذار.
-3. متغیرهای زیر را در Railway تنظیم کن.
-4. یک **Volume** بساز و به مسیر `/app/data` وصل کن (برای SQLite).
-5. متغیر `DB_PATH=/app/data/boma.db` را اضافه کن.
-6. Deploy کن و URL عمومی را بردار.
+1. Create a new project and connect this repo.
+2. Set the **root directory** to `server`.
+3. Set the environment variables below.
+4. Attach a volume at `/app/data` (SQLite).
+5. Set `DB_PATH=/app/data/boma.db`.
+6. Deploy and copy the public URL.
 
-## متغیرهای محیطی
+## Environment
 
-| متغیر | توضیح |
-|-------|-------|
-| `JWT_SECRET` | کلید رمزنگاری توکن — یک رشته تصادفی بلند |
-| `ADMIN_USERNAME` | نام کاربری پنل ادمین (پیش‌فرض: admin) |
-| `ADMIN_PASSWORD` | ⚠️ حتماً عوض کن (پیش‌فرض: boma1234) |
-| `OTP_API_URL` | آدرس endpoint ارسال SMS |
-| `OTP_API_KEY` | API Key سرویس SMS |
-| `FCM_SERVER_KEY` | Firebase server key برای push notification |
-| `DB_PATH` | مسیر فایل SQLite (پیش‌فرض: `./data/boma.db`) |
+| Variable | Notes |
+|----------|-------|
+| `JWT_SECRET` | Token signing key — a long random string |
+| `ADMIN_USERNAME` | Admin panel username (default: admin) |
+| `ADMIN_PASSWORD` | Change this (default: boma1234) |
+| `OTP_API_URL` | SMS send endpoint |
+| `OTP_API_KEY` | SMS API key |
+| `FCM_SERVER_KEY` | Firebase server key for push notification |
+| `DB_PATH` | SQLite file path (default: `./data/boma.db`) |
 
-## API Endpoints
+## API endpoints
 
 ```
 GET  /health
@@ -34,12 +34,12 @@ POST /api/analytics/ping       Authorization: Bearer <token>  { fcm_token? }
 GET  /admin                    (Basic Auth)
 ```
 
-## پنل ادمین (/admin)
+## Admin panel (`/admin`)
 
-- **داشبورد** — آمار کاربران، بازدید روزانه
-- **کاربران** — لیست کامل کاربران
-- **بروزرسانی اجباری** — کنترل force update بدون redeploy
-- **نوتیفیکیشن** — ارسال push به همه یا شماره خاص
+- **Dashboard** — users, daily opens
+- **Users** — full user list
+- **Force update** — min build without a redeploy
+- **Notification** — push to everyone or to one phone
 
 ## Flutter build
 

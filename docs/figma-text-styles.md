@@ -20,7 +20,7 @@ The agent will:
 
 1. Call `use_figma` with your `fileKey` and list `figma.getLocalTextStylesAsync()`.
 2. Write the result to `assets/figma/text_styles.json`.
-3. Hot restart the app — new styles show under **همه** in the style panel.
+3. Hot restart the app — new styles show under **All** in the style panel.
 
 ## JSON shape
 
@@ -30,7 +30,7 @@ Each entry in `styles` matches the Figma export:
 {
   "id": "heading_h1",
   "name": "Heading/H1",
-  "displayName": "عنوان بزرگ",
+  "displayName": "Large title",
   "fontSize": 32,
   "fontName": { "family": "Vazir", "style": "Bold" },
   "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 1 }],
