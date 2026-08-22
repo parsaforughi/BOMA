@@ -1,6 +1,6 @@
 {
-    "name": "BOMA",
-    "short_name": "BOMA",
+    "name": "Bstory",
+    "short_name": "Bstory",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

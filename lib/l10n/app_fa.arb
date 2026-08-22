@@ -1,6 +1,6 @@
 {
   "@@locale": "fa",
-  "appName": "BOMA",
+  "appName": "Bstory",
   "home": "خانه",
   "settings": "تنظیمات",
   "premium": "اشتراک ویژه",
@@ -108,7 +108,7 @@
   "proVersion": "نسخه حرفه‌ای",
   "locked": "قفل",
 
-  "splashTitle": "BOMA",
+  "splashTitle": "Bstory",
   "splashSubtitle": "استوری ساز حرفه‌ای",
 
   "noHistory": "تاریخچه‌ای وجود ندارد",

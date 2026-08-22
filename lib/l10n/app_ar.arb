@@ -1,6 +1,6 @@
 {
   "@@locale": "ar",
-  "appName": "BOMA",
+  "appName": "Bstory",
   "home": "الرئيسية",
   "settings": "الإعدادات",
   "premium": "الاشتراك المميز",
@@ -108,7 +108,7 @@
   "proVersion": "النسخة المميزة",
   "locked": "مقفل",
 
-  "splashTitle": "BOMA",
+  "splashTitle": "Bstory",
   "splashSubtitle": "صانع القصص الاحترافي",
 
   "noHistory": "لا يوجد سجل",
