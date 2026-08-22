@@ -81,7 +81,7 @@ class BomaApp extends ConsumerWidget {
     final localeState = ref.watch(localeProvider);
 
     return MaterialApp.router(
-      title: 'BOMA',
+      title: 'Bstory',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
       locale: localeState.locale,

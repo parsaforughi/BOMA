@@ -9,7 +9,7 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get appName => 'BOMA';
+  String get appName => 'Bstory';
 
   @override
   String get home => 'الرئيسية';
@@ -280,7 +280,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get locked => 'مقفل';
 
   @override
-  String get splashTitle => 'BOMA';
+  String get splashTitle => 'Bstory';
 
   @override
   String get splashSubtitle => 'صانع القصص الاحترافي';

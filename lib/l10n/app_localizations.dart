@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In fa, this message translates to:
-  /// **'BOMA'**
+  /// **'Bstory'**
   String get appName;
 
   /// No description provided for @home.
@@ -637,7 +637,7 @@ abstract class AppLocalizations {
   /// No description provided for @splashTitle.
   ///
   /// In fa, this message translates to:
-  /// **'BOMA'**
+  /// **'Bstory'**
   String get splashTitle;
 
   /// No description provided for @splashSubtitle.

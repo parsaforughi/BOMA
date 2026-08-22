@@ -35,7 +35,7 @@ class MainActivity : FlutterActivity() {
                                 "${applicationContext.packageName}.fileprovider",
                                 file,
                             )
-                            val clip = ClipData.newUri(contentResolver, "BOMA", uri)
+                            val clip = ClipData.newUri(contentResolver, "Bstory", uri)
                             val clipboard =
                                 getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             clipboard.setPrimaryClip(clip)

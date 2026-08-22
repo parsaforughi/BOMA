@@ -1,4 +1,4 @@
-# Boma - بما
+# Bstory
 
 Persian text-styling and story-creation app built with Flutter.
 

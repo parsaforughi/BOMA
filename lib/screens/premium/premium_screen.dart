@@ -429,7 +429,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
                         ),
                         const SizedBox(width: 10),
                         const Text(
-                          'boma',
+                          'Bstory',
                           style: TextStyle(
                             fontFamily: 'Vazir',
                             fontSize: 24,

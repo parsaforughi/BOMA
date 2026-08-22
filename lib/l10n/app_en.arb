@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appName": "BOMA",
+  "appName": "Bstory",
   "home": "Home",
   "settings": "Settings",
   "premium": "Premium",
@@ -108,7 +108,7 @@
   "proVersion": "Pro Version",
   "locked": "Locked",
 
-  "splashTitle": "BOMA",
+  "splashTitle": "Bstory",
   "splashSubtitle": "Professional Story Maker",
 
   "noHistory": "No history yet",

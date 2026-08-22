@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'BOMA';
+  String get appName => 'Bstory';
 
   @override
   String get home => 'Home';
@@ -280,7 +280,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locked => 'Locked';
 
   @override
-  String get splashTitle => 'BOMA';
+  String get splashTitle => 'Bstory';
 
   @override
   String get splashSubtitle => 'Professional Story Maker';

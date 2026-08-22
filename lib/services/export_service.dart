@@ -32,7 +32,7 @@ class ExportService {
       final tempDir = await getTemporaryDirectory();
       final file = File('${tempDir.path}/boma_${DateTime.now().millisecondsSinceEpoch}.png');
       await file.writeAsBytes(imageBytes);
-      await Gal.putImage(file.path, album: 'BOMA');
+      await Gal.putImage(file.path, album: 'Bstory');
       return true;
     } catch (e) {
       debugPrint('Error saving to gallery: $e');
