@@ -45,6 +45,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/covers/stickers/
     - assets/styles/
     - assets/styles/pishrafte/
     - assets/styles/beginner/
